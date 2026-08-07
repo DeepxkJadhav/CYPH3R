@@ -3,10 +3,133 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CYPH3R</title>
+    <title>CYPH3R // National Intelligence Command</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        margin: 0;
+        background-color: #030409;
+        font-family: 'Outfit', sans-serif;
+        color: #e2e8f0;
+        overflow-x: hidden;
+      }
+
+      /* Cyber terminal custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(3, 4, 9, 0.8);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #4f46e5;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #818cf8;
+      }
+
+      /* Grid Background Pattern */
+      .cyber-grid {
+        position: fixed;
+        inset: 0;
+        background-image: 
+          linear-gradient(rgba(79, 70, 229, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(79, 70, 229, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .cyber-glow-bg {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, transparent 70%);
+        top: -200px;
+        right: -200px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .cyber-glow-bg-2 {
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+        bottom: -150px;
+        left: -150px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Scanline Effect */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          rgba(18, 16, 16, 0) 50%, 
+          rgba(0, 0, 0, 0.25) 50%
+        );
+        background-size: 100% 4px;
+        z-index: 999;
+        opacity: 0.4;
+      }
+
+      /* Keyframe Animations */
+      @keyframes scan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.7; }
+      }
+
+      @keyframes radar-sweep {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+
+      .animate-scan {
+        animation: scan 3s linear infinite;
+      }
+
+      .animate-pulse-slow {
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      .animate-radar {
+        animation: radar-sweep 8s linear infinite;
+      }
+
+      .animate-blink {
+        animation: blink 1s step-end infinite;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div class="cyber-grid"></div>
+    <div class="cyber-glow-bg"></div>
+    <div class="cyber-glow-bg-2"></div>
+    <div class="scanlines"></div>
+    <div id="root" style="position: relative; z-index: 1;"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
