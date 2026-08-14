@@ -13,3 +13,4 @@ Automated and verified development entries.
 - `2026-08-11 16:26:00 +0530`: refactor(pipeline): extract async event emitter interface
 - `2026-08-14 10:15:00 +0530`: chore(audit): verify rate limiter token replenishment
 - `2026-08-14 12:32:00 +0530`: feat(osint): improve target metadata deduplication
+- `2026-08-14 14:49:00 +0530`: fix(recon): sanitize input headers before network probe
