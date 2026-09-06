@@ -20,3 +20,4 @@ Automated and verified development entries.
 - `2026-08-18 14:49:00 +0530`: test(rules): expand signature match validation suite
 - `2026-08-18 16:26:00 +0530`: feat(export): support ndjson streaming for bulk findings
 - `2026-08-18 18:43:00 +0530`: fix(dns): add fallback resolver for intermittent timeouts
+- `2026-09-06 10:15:00 +0530`: refactor(pipeline): extract async event emitter interface
