@@ -1,29 +1,42 @@
+import os
 import cv2
 import numpy as np
-import cv2
-import numpy as np
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Dict, Any, List
 
-app = FastAPI(title="CYPH3R API", version="0.1.0")
+app = FastAPI(
+    title="CYPH3R API",
+    version="0.2.0",
+    description="Visual OSINT Entity Investigation & Facial Intelligence Service"
+)
 
+# Explicit allowed origins to fix wildcard credential security vulnerability
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB upload ceiling
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 class ChatRequest(BaseModel):
-    match_id: str
-    question: str
+    match_id: str = Field(..., min_length=1, description="Identifier of the target entity match")
+    question: str = Field(..., min_length=1, description="Analytical question about the entity")
 
-match_profiles = {
+match_profiles: Dict[str, Dict[str, Any]] = {
     "match-1": {
         "name": "Entity Alpha",
         "aliases": ["Alpha One", "A. Ryder"],
@@ -86,19 +99,22 @@ def read_dashboard():
 
 @app.post("/search")
 def search_face(file: UploadFile = File(...)):
-    filename = file.filename
-    if not filename.lower().endswith((".jpg", ".jpeg", ".png")):
-        return JSONResponse(status_code=400, content={"error": "Unsupported file type"})
+    filename = file.filename or ""
+    if not filename.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+        return JSONResponse(status_code=400, content={"error": "Unsupported file type. Use JPG, PNG, or WEBP."})
 
     contents = file.file.read()
+    if len(contents) > MAX_UPLOAD_SIZE:
+        return JSONResponse(status_code=413, content={"error": "Uploaded image exceeds the 10MB size ceiling."})
+
     try:
         np_arr = np.frombuffer(contents, np.uint8)
         image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     except Exception:
-        return JSONResponse(status_code=400, content={"error": "Unable to decode image"})
+        return JSONResponse(status_code=400, content={"error": "Unable to decode image file."})
 
     if image is None:
-        return JSONResponse(status_code=400, content={"error": "Unable to decode image"})
+        return JSONResponse(status_code=400, content={"error": "Corrupt or unreadable image format."})
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(60, 60))
@@ -139,7 +155,7 @@ def search_face(file: UploadFile = File(...)):
 def chat_intel(request: ChatRequest):
     profile = match_profiles.get(request.match_id)
     if not profile:
-        return JSONResponse(status_code=404, content={"error": "Match not found"})
+        return JSONResponse(status_code=404, content={"error": "Target entity match not found"})
 
     question = request.question.strip()
     if not question:

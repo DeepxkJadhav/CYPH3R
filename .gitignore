@@ -1,6 +1,17 @@
 .venv/
 node_modules/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 .env
+*.local
 .DS_Store
+
+# Frontend Build Outputs
+dist/
+frontend/dist/
+
+# Python Testing Cache
+.pytest_cache/
+.coverage
+htmlcov/
