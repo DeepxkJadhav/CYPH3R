@@ -31,3 +31,4 @@ Automated and verified development entries.
 - `2026-11-19 12:32:00 +0530`: feat(export): support ndjson streaming for bulk findings
 - `2026-11-19 14:49:00 +0530`: fix(dns): add fallback resolver for intermittent timeouts
 - `2026-11-19 22:44:14 +0530`: perf(indexer): optimize sqlite transaction batch size
+- `2026-11-19 23:04:14 +0530`: refactor(pipeline): extract async event emitter interface
