@@ -36,3 +36,4 @@ Automated and verified development entries.
 - `2026-11-19 23:44:14 +0530`: perf(indexer): optimize sqlite transaction batch size
 - `2026-11-24 17:58:09 +0530`: refactor(pipeline): extract async event emitter interface
 - `2026-11-22 14:15:10 +0530`: feat(osint): improve target metadata deduplication
+- `2026-11-22 17:40:25 +0530`: fix(recon): sanitize input headers before network probe
