@@ -37,3 +37,4 @@ Automated and verified development entries.
 - `2026-11-24 17:58:09 +0530`: refactor(pipeline): extract async event emitter interface
 - `2026-11-22 14:15:10 +0530`: feat(osint): improve target metadata deduplication
 - `2026-11-22 17:40:25 +0530`: fix(recon): sanitize input headers before network probe
+- `2026-11-27 00:01:28 +0530`: docs(guide): update module usage documentation
